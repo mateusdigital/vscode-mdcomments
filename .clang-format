@@ -1,0 +1,99 @@
+---
+##----------------------------------------------------------------------------##
+##                               *       +                                    ##
+##                         '                  |                               ##
+##                     ()    .-.,="``"=.    - o -                             ##
+##                           '=/_       \     |                               ##
+##                        *   |  '=._    |                                    ##
+##                             \     `=./`,        '                          ##
+##                          .   '=.__.=' `='      *                           ##
+##                 +                         +                                ##
+##                      O      *        '       .                             ##
+##                                                                            ##
+##  File      : .clang-format.                                                ##
+##  Project   : dots                                                          ##
+##  Date      : 2025-01-16                                                    ##
+##  License   : See project's COPYING.TXT for full info.                      ##
+##  Author    : mateus.digital <hello@mateus.digital>                         ##
+##  Copyright : mateus.digital - 2025                                         ##
+##                                                                            ##
+##  Description :                                                             ##
+##                                                                            ##
+##----------------------------------------------------------------------------##
+
+# Common settings for all languages
+BasedOnStyle: LLVM
+
+## -----------------------------------------------------------------------------
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Right
+AlignEscapedNewlines: Right
+AlignOperands: AlignAfterOperator
+
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossComments: false
+  AcrossEmptyLines: false
+  AlignCompound: true
+  PadOperators: true
+
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossComments: false
+  AcrossEmptyLines: true
+  AlignCompound: true
+  PadOperators: true
+
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
+
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 2
+
+## -----------------------------------------------------------------------------
+AllowShortCaseLabelsOnASingleLine: true
+## -----------------------------------------------------------------------------
+BinPackArguments: false
+BinPackParameters: false
+## -----------------------------------------------------------------------------
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: true
+  AfterControlStatement: false
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+  AfterObjCDeclaration: false
+  IndentBraces: false
+BreakBeforeBraces: Custom
+## -----------------------------------------------------------------------------
+ColumnLimit: 81
+ContinuationIndentWidth: 2
+IndentWidth: 2
+InsertTrailingCommas: None
+LineEnding: LF
+InsertNewlineAtEOF: true
+SortIncludes: CaseInsensitive
+## -----------------------------------------------------------------------------
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeJsonColon: false
+## -----------------------------------------------------------------------------
+UseTab: Never

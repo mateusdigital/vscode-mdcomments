@@ -23,16 +23,15 @@
 //                                                                            //
 //----------------------------------------------------------------------------//
 
-
 //
 // Imports
 //
 
 // -----------------------------------------------------------------------------
-import * as vscode from "vscode";
 import * as fs from "fs";
-import * as path from "path";
 import * as JSON5 from "json5";
+import * as path from "path";
+import * as vscode from "vscode";
 
 //
 //
@@ -44,8 +43,8 @@ export default class VSCodeUtils
   // ---------------------------------------------------------------------------
   static GetCommentInfo(languageId: string)
   {
-    const config:  any = VSCodeUtils.GetLanguageInfo(languageId);
-    if(!config) {
+    const config: any = VSCodeUtils.GetLanguageInfo(languageId);
+    if (!config) {
       return null;
     }
 
@@ -56,20 +55,23 @@ export default class VSCodeUtils
   // ---------------------------------------------------------------------------
   static GetLanguageInfo(languageId: string)
   {
-    let config_file_path: string | null = null;
+    let config_file_path: string|null = null;
     for (const ext of vscode.extensions.all) {
-      const is_lang_config  = ext.id.startsWith("vscode.")
-        && ext.packageJSON.contributes
-        && ext.packageJSON.contributes.languages
+      const is_lang_config = ext.id.startsWith("vscode.") &&
+                             ext.packageJSON.contributes &&
+                             ext.packageJSON.contributes.languages
 
-      if (!is_lang_config) {
+      if (!is_lang_config)
+      {
         continue;
       }
 
       const language_packages: any[] = ext.packageJSON.contributes.languages;
-      const language_package_data : any = language_packages.find(pack => pack.id === languageId);
+      const language_package_data: any =
+        language_packages.find(pack => pack.id === languageId);
       if (!!language_package_data && language_package_data.configuration) {
-        config_file_path = path.join(ext.extensionPath, language_package_data.configuration);
+        config_file_path =
+          path.join(ext.extensionPath, language_package_data.configuration);
         break;
       }
     }
