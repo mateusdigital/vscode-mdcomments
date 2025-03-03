@@ -14,7 +14,7 @@
 //  Date      : 2024-04-29                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
 //  Author    : mateus.digital <hello@mateus.digital>                         //
-//  Copyright : mateus.digital - 2024                                         //
+//  Copyright : mateus.digital - 2024, 2025                                   //
 //                                                                            //
 //  Description :                                                             //
 //                                                                            //
