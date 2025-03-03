@@ -38,8 +38,11 @@ import * as vscode from "vscode";
 //
 
 // -----------------------------------------------------------------------------
-export default class VSCodeUtils
+export class VSCodeUtils
 {
+  // ---------------------------------------------------------------------------
+  static ShowError(...args: any) { vscode.window.showErrorMessage(args); }
+
   // ---------------------------------------------------------------------------
   static GetCommentInfo(languageId: string)
   {
@@ -69,6 +72,7 @@ export default class VSCodeUtils
       const language_packages: any[] = ext.packageJSON.contributes.languages;
       const language_package_data: any =
         language_packages.find(pack => pack.id === languageId);
+
       if (!!language_package_data && language_package_data.configuration) {
         config_file_path =
           path.join(ext.extensionPath, language_package_data.configuration);
