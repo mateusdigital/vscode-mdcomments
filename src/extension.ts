@@ -27,15 +27,14 @@
 // -----------------------------------------------------------------------------
 import * as vscode from "vscode";
 
-import {VSCodeUtils} from "./VSCodeUtils";
+import { VSCodeUtils } from "./VSCodeUtils";
 
 //
 // Public Functions
 //
 
 // -----------------------------------------------------------------------------
-export function activate(context: vscode.ExtensionContext)
-{
+export function activate(context: vscode.ExtensionContext) {
   // ---------------------------------------------------------------------------
   const single_line_disposable = vscode.commands.registerCommand(
     "mdcomments.singleLineComment", () => { _SingleLineComment(); }
@@ -50,25 +49,24 @@ export function activate(context: vscode.ExtensionContext)
 }
 
 // -----------------------------------------------------------------------------
-export function deactivate() {}
+export function deactivate() { }
 
 //
 // Private Functions
 //
 
 // -----------------------------------------------------------------------------
-function _SingleLineComment()
-{
+function _SingleLineComment() {
   try {
     const curr_editor = vscode.window.activeTextEditor;
     if (!curr_editor) {
       return;
     }
 
-    const selection    = curr_editor.selection;
+    const selection = curr_editor.selection;
     let selection_text = curr_editor.document.lineAt(selection.start.line).text;
-    let line           = selection.start.line;
-    let column         = selection.start.character;
+    let line = selection.start.line;
+    let column = selection.start.character;
 
     if (selection_text.trim().length != 0) {
       column = selection_text.length - selection_text.trimStart().length;
@@ -90,18 +88,17 @@ function _SingleLineComment()
 }
 
 // -----------------------------------------------------------------------------
-function _MultiLineComment()
-{
+function _MultiLineComment() {
   try {
     const curr_editor = vscode.window.activeTextEditor;
     if (!curr_editor) {
       return;
     }
 
-    const selection    = curr_editor.selection;
+    const selection = curr_editor.selection;
     let selection_text = curr_editor.document.lineAt(selection.start.line).text;
-    let line           = selection.start.line;
-    let column         = selection.start.character;
+    let line = selection.start.line;
+    let column = selection.start.character;
 
     if (selection_text.trim().length != 0) {
       column = selection_text.length - selection_text.trimStart().length;
@@ -131,9 +128,9 @@ function _MultiLineComment()
       })
       .then(() => {
         // Move the cursor
-        const new_line      = line + 1;
-        const new_column    = column + 3;
-        const new_position  = new vscode.Position(new_line, new_column);
+        const new_line = line + 1;
+        const new_column = column + 3;
+        const new_position = new vscode.Position(new_line, new_column);
         const new_selection = new vscode.Selection(new_position, new_position);
 
         curr_editor.selection = new_selection;
@@ -149,9 +146,8 @@ function _MultiLineComment()
 function _ShowError(error: any) { console.log(error); }
 
 // -----------------------------------------------------------------------------
-function _CreateCommentInfo(editor: vscode.TextEditor)
-{
-  const language_id  = editor.document.languageId;
+function _CreateCommentInfo(editor: vscode.TextEditor) {
+  const language_id = editor.document.languageId;
   const comment_info = VSCodeUtils.GetCommentInfo(language_id);
 
   if (!comment_info) {
@@ -162,23 +158,30 @@ function _CreateCommentInfo(editor: vscode.TextEditor)
     return null;
   }
 
-  let single_start = (comment_info.lineComment) ? comment_info.lineComment
-                                                : comment_info.blockComment[0];
-  let single_end =
-    (comment_info.lineComment) ? "" : comment_info.blockComment[1];
+  let single_start = (comment_info.lineComment)
+    ? comment_info.lineComment
+    : comment_info.blockComment[0];
 
-  let multi_start = (comment_info.lineComment) ? comment_info.lineComment
-                                               : comment_info.blockComment[0];
-  let multi_end   = (comment_info.lineComment) ? comment_info.lineComment
-                                               : comment_info.blockComment[1];
-  let multi_middle =
-    (comment_info.lineComment)
-      ? comment_info.lineComment
-      : comment_info.blockComment[0][comment_info.blockComment[0].length - 1];
+  let single_end = (comment_info.lineComment)
+    ? ""
+    : comment_info.blockComment[1];
+
+  let multi_start = (comment_info.lineComment)
+    ? comment_info.lineComment
+    : comment_info.blockComment[0];
+
+  let multi_end = (comment_info.lineComment)
+    ? comment_info.lineComment
+    : comment_info.blockComment[1];
+
+  let multi_middle = (comment_info.lineComment)
+    ? comment_info.lineComment
+    : comment_info.blockComment[0][comment_info.blockComment[0].length - 1];
 
   if (single_start && single_start.length < 2) {
     single_start += single_start;
   }
+
   if (single_end && single_end.length != 0 && single_end < 2) {
     single_end += single_end;
   }
@@ -191,15 +194,15 @@ function _CreateCommentInfo(editor: vscode.TextEditor)
   }
 
   const obj = {
-    singleLineStart : single_start,
-    singleLineEnd : single_end,
+    singleLineStart: single_start,
+    singleLineEnd: single_end,
 
-    multiLineStart : multi_start,
-    multiLineMiddle : multi_middle,
-    multiLineEnd : multi_end,
+    multiLineStart: multi_start,
+    multiLineMiddle: multi_middle,
+    multiLineEnd: multi_end,
 
-    singleLineLength : single_start.length + single_end.length,
-    multiLineLength : multi_start.length + multi_end.length,
+    singleLineLength: single_start.length + single_end.length,
+    multiLineLength: multi_start.length + multi_end.length,
   };
 
   return obj;
@@ -208,8 +211,7 @@ function _CreateCommentInfo(editor: vscode.TextEditor)
 // -----------------------------------------------------------------------------
 function _CreateCommentLine(
   editor: vscode.TextEditor, selectionColumn: number, selectionText: string = ""
-)
-{
+) {
   const info = _CreateCommentInfo(editor);
   if (!info) {
     return null;
@@ -218,19 +220,31 @@ function _CreateCommentLine(
   selectionText = selectionText.trim();
 
   const comment_start = info.singleLineStart;
-  const comment_end   = info.singleLineEnd;
+  const comment_end = info.singleLineEnd;
 
   const space_start = " ";
-  const space_end   = (info.singleLineEnd) ? " " : "";
+  const space_end = (info.singleLineEnd) ? " " : "";
 
-  const first_spacer  = "-".repeat(3);
+  const first_spacer = "-".repeat(3);
   const second_spacer = "-".repeat(80);
-  const text_margin   = (selectionText.length != 0) ? " " : "";
+  const text_margin = (selectionText.length != 0) ? " " : "";
 
-  const comment_line =
-    (comment_start + space_start + first_spacer + text_margin + selectionText +
-     text_margin + second_spacer + space_end
-    ).substring(0, 80 - (selectionColumn + comment_end.length));
+  const first_half
+    = comment_start
+    + space_start
+    + first_spacer
+    + text_margin
+    + selectionText
+    + text_margin
+    + second_spacer;
+
+  const second_half
+    = space_end
+    + comment_end;
+
+  const comment_line
+    = first_half.substring(0, 80 - second_half.length)
+    + second_half;
 
   return comment_line;
 }
@@ -238,21 +252,20 @@ function _CreateCommentLine(
 // -----------------------------------------------------------------------------
 function _CreateCommentBlock(
   editor: vscode.TextEditor, spaceGap: string, selectedText: string
-)
-{
+) {
   const comment_info = _CreateCommentInfo(editor);
   if (!comment_info) {
     return null;
   }
   selectedText = selectedText.trim();
 
-  const start  = comment_info.multiLineStart;
+  const start = comment_info.multiLineStart;
   const middle = comment_info.multiLineMiddle;
-  const end    = comment_info.multiLineEnd;
+  const end = comment_info.multiLineEnd;
 
-  let   comment_header  = start + "\n";
-  comment_header       += spaceGap + middle + " " + selectedText + "\n";
-  comment_header       += spaceGap + end + "\n";
+  let comment_header = start + "\n";
+  comment_header += spaceGap + middle + " " + selectedText + "\n";
+  comment_header += spaceGap + end + "\n";
 
   return comment_header;
 }
