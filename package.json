@@ -1,13 +1,15 @@
 {
   "name": "mdcomments",
-  "displayName": "mateusdigital - comments",
-  "description": "Tool to be able to add header comments with file information",
-  "publisher": "mateusdigital",
-  "repository": "https://github.com/mateusdigital/mdcomments",
+  "displayName": "md:Comments",
+  "description": "Tool to add line and multiline fancy comments",
+  "publisher": "mateus.digital",
+  "repository": "https://github.com/mateusdigital/vscode-mdcomments",
+  "bugs": "https://github.com/mateusdigital/vscode-mdcomments/issues",
   "website": "https://mateusdigital.com/projects/mdcomments",
-  "bugs": "https://github.com/mateusdigital/mdcomments/issues",
+
   "main": "./out/extension.js",
   "icon": "res/images/icon.png",
+
   "version": "1.0.0",
   "build": 0,
   "engines": {
