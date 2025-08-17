@@ -26,8 +26,8 @@
 
 // -----------------------------------------------------------------------------
 import * as vscode from "vscode";
-
 import { VSCodeUtils } from "./VSCodeUtils";
+
 
 //
 // Public Functions
@@ -65,12 +65,11 @@ function _SingleLineComment() {
 
     const selection = curr_editor.selection;
     let selection_text = curr_editor.document.lineAt(selection.start.line).text;
-    let line = selection.start.line;
-    let column = selection.start.character;
 
-    if (selection_text.trim().length != 0) {
-      column = selection_text.length - selection_text.trimStart().length;
-    }
+    let line = selection.start.line;
+    const column = (selection_text.trim().length == 0)
+      ? selection.start.character
+      : selection_text.length - selection_text.trimStart().length;
 
     const comment_line = _CreateCommentLine(curr_editor, column, selection_text);
     if (!comment_line) {
@@ -96,13 +95,12 @@ function _MultiLineComment() {
     }
 
     const selection = curr_editor.selection;
-    let selection_text = curr_editor.document.lineAt(selection.start.line).text;
-    let line = selection.start.line;
-    let column = selection.start.character;
+    const selection_text = curr_editor.document.lineAt(selection.start.line).text;
 
-    if (selection_text.trim().length != 0) {
-      column = selection_text.length - selection_text.trimStart().length;
-    }
+    const line = selection.start.line;
+    const column = (selection_text.trim().length == 0)
+      ? selection.start.character
+      : selection_text.length - selection_text.trimStart().length;
 
     //
     const comment_line = _CreateCommentLine(curr_editor, column, "");
@@ -178,18 +176,23 @@ function _CreateCommentInfo(editor: vscode.TextEditor) {
     ? comment_info.lineComment
     : comment_info.blockComment[0][comment_info.blockComment[0].length - 1];
 
-  if (single_start && single_start.length < 2) {
+  if (single_start && single_start.length > 0 && single_start.length < 2) {
     single_start += single_start;
   }
 
-  if (single_end && single_end.length != 0 && single_end < 2) {
+  if (single_end && single_end.length > 0 && single_end.length < 2) {
     single_end += single_end;
   }
 
-  if (multi_start && multi_start.length < 2) {
+  if (multi_start && multi_start.length > 0 && multi_start.length < 2) {
     multi_start += multi_start;
   }
-  if (multi_end && multi_end.length != 0 && multi_end < 2) {
+
+  if (multi_middle && multi_middle.length > 0 && multi_middle.length < 2) {
+    multi_middle += multi_middle;
+  }
+
+  if (multi_end && multi_end.length > 0 && multi_end.length < 2) {
     multi_end += multi_end;
   }
 
@@ -246,6 +249,7 @@ function _CreateCommentLine(
     = first_half.substring(0, 80 - second_half.length)
     + second_half;
 
+  console.log("comment_line", comment_line);
   return comment_line;
 }
 
@@ -267,5 +271,6 @@ function _CreateCommentBlock(
   comment_header += spaceGap + middle + " " + selectedText + "\n";
   comment_header += spaceGap + end + "\n";
 
+  console.log("comment_header", comment_header);
   return comment_header;
 }
