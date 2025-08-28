@@ -141,7 +141,10 @@ function _MultiLineComment() {
 }
 
 // -----------------------------------------------------------------------------
-function _ShowError(error: any) { console.log(error); }
+function _ShowError(error: any) {
+  console.log(error);
+  VSCodeUtils.ShowError(`mdcomments - ${error}`);
+}
 
 // -----------------------------------------------------------------------------
 function _CreateCommentInfo(editor: vscode.TextEditor) {
@@ -188,9 +191,9 @@ function _CreateCommentInfo(editor: vscode.TextEditor) {
     multi_start += multi_start;
   }
 
-  if (multi_middle && multi_middle.length > 0 && multi_middle.length < 2) {
-    multi_middle += multi_middle;
-  }
+  // if (multi_middle && multi_middle.length > 0 && multi_middle.length < 2) {
+  //   multi_middle += multi_middle;
+  // }
 
   if (multi_end && multi_end.length > 0 && multi_end.length < 2) {
     multi_end += multi_end;
@@ -217,6 +220,7 @@ function _CreateCommentLine(
 ) {
   const info = _CreateCommentInfo(editor);
   if (!info) {
+    _ShowError(`mdcomments - failed to get comment info -${editor.document.languageId}`);
     return null;
   }
 

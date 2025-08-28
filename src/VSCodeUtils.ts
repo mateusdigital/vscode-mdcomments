@@ -41,18 +41,24 @@ import * as vscode from "vscode";
 export class VSCodeUtils
 {
   // ---------------------------------------------------------------------------
-  static ShowError(...args: any) { vscode.window.showErrorMessage(args); }
+  static ShowError(...args: any) {
+    vscode.window.showErrorMessage("ERROR", ...args);
+  }
 
   // ---------------------------------------------------------------------------
   static GetCommentInfo(languageId: string)
   {
     const config: any = VSCodeUtils.GetLanguageInfo(languageId);
     if (!config) {
-      return null;
+      return VSCodeUtils._GetCommentInfoFallback(languageId);
     }
+    return config.comments;
+  }
 
-    const comments = config.comments;
-    return comments;
+  static _GetCommentInfoFallback(languageId: string) {
+    switch(languageId) {
+      case "kotlin": { return VSCodeUtils.GetLanguageInfo("cpp").comments; }
+    }
   }
 
   // ---------------------------------------------------------------------------
