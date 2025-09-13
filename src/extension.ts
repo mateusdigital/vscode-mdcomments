@@ -26,8 +26,9 @@
 
 // -----------------------------------------------------------------------------
 import * as vscode from "vscode";
-import { VSCodeUtils } from "./VSCodeUtils";
-
+import { CommentInfo, CommentUtils } from "../libs/lib-mdViseu/mdViseu/CommentUtils";
+import { VSCodeUtils } from "../libs/lib-mdViseu/mdViseu/VSUtils";
+import { ErrorUtils } from "../libs/lib-mdViseu/mdViseu//ErrorUtils";
 
 //
 // Public Functions
@@ -58,7 +59,7 @@ export function deactivate() { }
 // -----------------------------------------------------------------------------
 function _SingleLineComment() {
   try {
-    const curr_editor = vscode.window.activeTextEditor;
+    const curr_editor = VSCodeUtils.ActiveEditor();
     if (!curr_editor) {
       return;
     }
@@ -143,75 +144,13 @@ function _MultiLineComment() {
 // -----------------------------------------------------------------------------
 function _ShowError(error: any) {
   console.log(error);
-  VSCodeUtils.ShowError(`mdcomments - ${error}`);
+  ErrorUtils.ShowErrorToUser(`mdcomments - ${error}`);
 }
 
 // -----------------------------------------------------------------------------
 function _CreateCommentInfo(editor: vscode.TextEditor) {
-  const language_id = editor.document.languageId;
-  const comment_info = VSCodeUtils.GetCommentInfo(language_id);
-
-  if (!comment_info) {
-    VSCodeUtils.ShowError(
-      `mdcomments - failed to get comment info -${language_id}`
-    );
-
-    return null;
-  }
-
-  let single_start = (comment_info.lineComment)
-    ? comment_info.lineComment
-    : comment_info.blockComment[0];
-
-  let single_end = (comment_info.lineComment)
-    ? ""
-    : comment_info.blockComment[1];
-
-  let multi_start = (comment_info.lineComment)
-    ? comment_info.lineComment
-    : comment_info.blockComment[0];
-
-  let multi_end = (comment_info.lineComment)
-    ? comment_info.lineComment
-    : comment_info.blockComment[1];
-
-  let multi_middle = (comment_info.lineComment)
-    ? comment_info.lineComment
-    : comment_info.blockComment[0][comment_info.blockComment[0].length - 1];
-
-  if (single_start && single_start.length > 0 && single_start.length < 2) {
-    single_start += single_start;
-  }
-
-  if (single_end && single_end.length > 0 && single_end.length < 2) {
-    single_end += single_end;
-  }
-
-  if (multi_start && multi_start.length > 0 && multi_start.length < 2) {
-    multi_start += multi_start;
-  }
-
-  // if (multi_middle && multi_middle.length > 0 && multi_middle.length < 2) {
-  //   multi_middle += multi_middle;
-  // }
-
-  if (multi_end && multi_end.length > 0 && multi_end.length < 2) {
-    multi_end += multi_end;
-  }
-
-  const obj = {
-    singleLineStart: single_start,
-    singleLineEnd: single_end,
-
-    multiLineStart: multi_start,
-    multiLineMiddle: multi_middle,
-    multiLineEnd: multi_end,
-
-    singleLineLength: single_start.length + single_end.length,
-    multiLineLength: multi_start.length + multi_end.length,
-  };
-
-  return obj;
+  const comment_info = CommentUtils.CreateCommentInfo(editor);
+  return comment_info;
 }
 
 // -----------------------------------------------------------------------------

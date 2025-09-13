@@ -6,11 +6,9 @@
   "repository": "https://github.com/mateusdigital/vscode-mdcomments",
   "bugs": "https://github.com/mateusdigital/vscode-mdcomments/issues",
   "website": "https://mateusdigital.com/projects/mdcomments",
-
   "main": "./out/extension.js",
   "icon": "res/images/icon.png",
-
-  "version": "1.0.0",
+  "version": "1.1.0",
   "build": 0,
   "engines": {
     "vscode": "^1.88.0"
@@ -53,6 +51,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "json5": "^2.2.3"
+    "json5": "^2.2.3",
+    "vsce": "^2.15.0"
   }
 }
